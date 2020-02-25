@@ -1,7 +1,34 @@
-const knex = require('knex');
+// create folder that you are creating functions for first 
 
-const knexfile = require('../knexfile.js')
+const db = require('../db-config.js');
 
-const environment = process.env.NODE_ENV || 'development';
+module.exports = {
+    add,
+    find,
+    findBy,
+    findById,
+};
 
-module.exports = knex(knexfile[environment]);
+
+function find() {
+    return db('users').select('id', username, password);
+}
+
+function findBy(filter) {
+    return db('users').where(filter);
+}
+
+function add(user) {
+    return db('users')
+    .insert(user, 'id')
+    .then(ids => {
+        const [id] = ids;
+        return findById(id);
+    });
+}
+
+function findById(id) {
+    return db('users')
+    .where({ id })
+    .first();
+}
