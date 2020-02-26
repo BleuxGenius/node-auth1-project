@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const restricted = require('');
+const restricted = require('./restricted-middleware.js');
 
 const User = require('../Users/users-model.js');
 
@@ -19,12 +19,13 @@ router.post('/register', (req, res) => {
 
     user.password = hash;
 
-    User.ass(user)
+    User.add(user)
     .then(saved => {
         res.status(201).json(saved);
 
     })
     .catch(error => {
+        console.log(error)
         res.status(500).json({ message: ' an error occured trying to register. Please try again.'})
     })
 })
@@ -32,11 +33,12 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     let {username, password } = req.body;
 
-    User.findB({ username})
+    User.findBy({ username })
     .first()
     .then(user => {
-        if (user && bcrypt.compareSync(password, user.password))
-        {
+        if (user && bcrypt.compareSync(password, user.password)) {
+            req.session.user = user; // svaing the information about the user from the session. now that we have it saved 
+            // a cookie will be created and sent back to the client. 
             res.status(200).json({
                 message: ` welcome ${user.username}`
             })

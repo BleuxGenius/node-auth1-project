@@ -6,7 +6,8 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: './dev.sqlite3' //<<<<<<<change to './users.squlite3'
+      filename: './users.db3' //<<<<<<<change to './users.db3' so a database inside the root folder is created 
+      // inside terminal type `knex migrate:latest` to run all migration files 
     }
   },
 

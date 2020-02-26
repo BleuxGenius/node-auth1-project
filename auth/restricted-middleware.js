@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+
 const UserData = require('../Users/users-model.js');
 
 module.exports = function restricted(req, res, next) {
