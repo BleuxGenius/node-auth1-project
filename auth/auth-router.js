@@ -13,7 +13,7 @@ router.post('/register', (req, res) => {
 
     User.add(user)
     .then(saved => {
-        console.log(error)
+        console.log(saved)
         req.session.loggedIn = true;
         res.status(201).json(saved);
 
@@ -24,7 +24,7 @@ router.post('/register', (req, res) => {
     })
 })
 
-router.post('/login', restricted, (req, res) => {
+router.post('/login',  (req, res) => {
     let {username, password } = req.body;
 
     User.findBy({ username })

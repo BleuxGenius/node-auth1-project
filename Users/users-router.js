@@ -6,7 +6,7 @@ const restricted = require('../auth/restricted-middleware.js');
 const router = express.Router();
 
 // we would like this to be protected 
-router.get('/', (req, res) => {
+router.get('/', restricted, (req, res) => {
     Users.find()
     .then(users => {
         res.json(users);
