@@ -4,40 +4,35 @@ const restricted = require('./restricted-middleware.js');
 
 const User = require('../Users/users-model.js');
 
+// starting point 
 router.post('/register', (req, res) => {
     let user = req.body;
-
-    if(!user.username || !user.password) {
-        return res.status(500).json({ message: 'must provide username and password'});
-    }
-
-    if (user.password.length < 0) {
-        return res.status(400).json({ message: 'please enter a password'})
-    }
-
+    
     const hash = bcrypt.hashSync(user.password, 16);
-
     user.password = hash;
 
     User.add(user)
     .then(saved => {
+        console.log(error)
+        req.session.loggedIn = true;
         res.status(201).json(saved);
 
     })
     .catch(error => {
         console.log(error)
-        res.status(500).json({ message: ' an error occured trying to register. Please try again.'})
+        res.status(500).json(error)
     })
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', restricted, (req, res) => {
     let {username, password } = req.body;
 
     User.findBy({ username })
     .first()
     .then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
-            req.session.user = user; // svaing the information about the user from the session. now that we have it saved 
+            req.session.user = user; // svaing the information about the user from the session. 
+            // now that we have it saved 
             // a cookie will be created and sent back to the client. 
             res.status(200).json({
                 message: ` welcome ${user.username}`

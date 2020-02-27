@@ -3,6 +3,8 @@
 const express = require('express');
 const session = ('express-session');
 
+const config = require('./db-config.js')
+
 const userRouter = require('./Users/users-router.js');
 const authrouter = require('./auth/auth-router.js');
 
@@ -17,7 +19,8 @@ const server = express();
 //         httpOnly: true // can not be accesed from javscript. set to true will not be availabale for the client 
 //     },
 //     resave: false,
-//     saveUninititalized: false, // recreate a session if it has not changed , for GDPR laws against setting cookies automatically 
+//     saveUninititalized: false, // recreate a session if it has not changed , 
+//     // for GDPR laws against setting cookies automatically 
 // };
 
 server.use(express.json()); // parse the JSON

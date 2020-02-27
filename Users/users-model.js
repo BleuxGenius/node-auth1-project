@@ -11,7 +11,8 @@ module.exports = {
 
 
 function find() {
-    return db('users').select('id', username, password);
+    // must stringify how to find the data
+    return db('users').select('id', "username", "password");
 }
 
 function findBy(filter) {
